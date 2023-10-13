@@ -2,6 +2,7 @@ package com.basit.workout_library.fragment
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,12 +13,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+//import androidx.navigation.fragment.findNavController
+//import androidx.navigation.fragment.navArgs
 import com.basit.workout_library.R
+import com.basit.workout_library.SingleFitnessProgramActivity
 import com.basit.workout_library.WorkoutLibraryApplication
 import com.basit.workout_library.base.WorkoutLibBaseFragment
 import com.basit.workout_library.databinding.FragmentFitnessProgramBinding
+import com.basit.workout_library.models.FitnessProgram
 import com.basit.workout_library.models.FitnessProgramActivityState
 import com.basit.workout_library.models.FitnessTimerType
 import com.basit.workout_library.models.TimerTickState
@@ -32,11 +35,19 @@ import kotlinx.coroutines.Job
 import java.time.LocalDateTime
 import java.util.Locale
 
+private const val ARG_DAY_INDEX = "param1"
+private const val ARG_COLOR = "param2"
+private const val ARG_FITNESS_PROGRAMS = "param3"
+
 internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
+
+    private var paramFitnessPrograms: FitnessProgram? = null
+    private var paramColor: Int? = null
+    private var paramDayIndex: Int? = null
 
     private lateinit var binding: FragmentFitnessProgramBinding
     private lateinit var viewModel: FitnessProgramViewModel
-    private val args:FitnessProgramFragmentArgs by navArgs()
+    //private val args:FitnessProgramFragmentArgs by navArgs()
 
     private lateinit var workouts:List<Workout>
     private var dayIndex = -1
@@ -52,6 +63,20 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
     private var mTimerType = FitnessTimerType.Definite
     private var textToSpeech = ""
     private var textToSpeechInit = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            paramDayIndex = it.getInt(ARG_DAY_INDEX)
+            paramColor = it.getInt(ARG_COLOR)
+            paramFitnessPrograms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelable(ARG_FITNESS_PROGRAMS, FitnessProgram::class.java)
+            } else {
+                it.getParcelable(ARG_FITNESS_PROGRAMS)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -202,13 +227,14 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
             FitnessProgramActivityState.Finish -> {
 
                 mBackPressCallback.remove()
-                findNavController().navigate(
+                (requireActivity() as SingleFitnessProgramActivity).launchFragment("finish")
+                /*findNavController().navigate(
                     FitnessProgramFragmentDirections.actionFitnessProgramToFinish(
                         args.dayIndex,
                         args.color,
                         args.fitnessProgram
                     )
-                )
+                )*/
             }
 
             FitnessProgramActivityState.Pause -> {
@@ -255,8 +281,8 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
         viewModel.addHistory(
             WorkoutHistory(
                 0,
-                args.fitnessProgram.id,
-                args.dayIndex + 1,
+                paramFitnessPrograms!!.id,
+                paramDayIndex!! + 1,
                 workouts[currentWorkoutPosition].item.id,
                 totalSecondsSpent,
                 LocalDateTime.now()
@@ -486,9 +512,9 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
     }
 
     private fun getData() {
-        val fitnessProgram = args.fitnessProgram
-        dayIndex = args.dayIndex
-        val color = args.color
+        val fitnessProgram = paramFitnessPrograms!!
+        dayIndex = paramDayIndex!!
+        val color = paramColor!!
 
         //(activity as BaseActivityFatLoss).updateStatusBarColor(Color.WHITE,true)
         workouts = fitnessProgram.days[dayIndex].workouts
@@ -597,6 +623,27 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
         mCurrentState = state
 
         //Log.d(TAG, "state: ${mCurrentState.name} prev: ${mLastState.name}")
+    }
+
+    companion object {
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param title Parameter 1.
+         * @param fitnessPrograms Parameter 2.
+         * @return A new instance of fragment BlankFragment.
+         */
+        @JvmStatic
+        fun newInstance(dayIndex: Int, color: Int,  fitnessPrograms: FitnessProgram) =
+            FitnessProgramFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_DAY_INDEX, dayIndex)
+                    putInt(ARG_COLOR, color)
+                    putParcelable(ARG_FITNESS_PROGRAMS, fitnessPrograms)
+                }
+            }
     }
 
 }

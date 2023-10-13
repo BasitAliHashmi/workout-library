@@ -2,23 +2,47 @@ package com.basit.workout_library.fragment
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
+//import androidx.navigation.fragment.navArgs
 import com.basit.workout_library.base.WorkoutLibBaseFragment
 import com.basit.workout_library.databinding.FragmentFinishFitnessProgramBinding
+import com.basit.workout_library.models.FitnessProgram
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
+private const val ARG_DAY_INDEX = "param1"
+private const val ARG_COLOR = "param2"
+private const val ARG_FITNESS_PROGRAMS = "param3"
+
 internal class FitnessProgramFinishFragment : WorkoutLibBaseFragment() {
+
+    private var paramFitnessPrograms: FitnessProgram? = null
+    private var paramColor: Int? = null
+    private var paramDayIndex: Int? = null
 
     private lateinit var binding: FragmentFinishFitnessProgramBinding
     private lateinit var viewModel: FitnessProgramViewModel
-    private val args:FitnessProgramFinishFragmentArgs by navArgs()
+    //private val args:FitnessProgramFinishFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            paramDayIndex = it.getInt(ARG_DAY_INDEX)
+            paramColor = it.getInt(ARG_COLOR)
+            paramFitnessPrograms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelable(ARG_FITNESS_PROGRAMS, FitnessProgram::class.java)
+            } else {
+                it.getParcelable(ARG_FITNESS_PROGRAMS)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,8 +74,8 @@ internal class FitnessProgramFinishFragment : WorkoutLibBaseFragment() {
     private fun loadData() {
         viewModel.getSummarizedReport(
             LocalDateTime.now(),
-            args.fitnessProgram.id,
-            args.dayIndex + 1
+            paramFitnessPrograms!!.id,
+            paramDayIndex!! + 1
         )
     }
 
@@ -65,9 +89,9 @@ internal class FitnessProgramFinishFragment : WorkoutLibBaseFragment() {
     }
 
     private fun bindData(){
-        val fitnessProgram = args.fitnessProgram
-        val dayIndex = args.dayIndex
-        val color = args.color
+        val fitnessProgram = paramFitnessPrograms!!
+        val dayIndex = paramDayIndex!!
+        val color = paramColor!!
 
         binding.layoutRoot.setBackgroundColor(color)
         //(activity as BaseActivityFatLoss).updateStatusBarColor(color,false)
@@ -102,4 +126,24 @@ internal class FitnessProgramFinishFragment : WorkoutLibBaseFragment() {
         }
     }
 
+    companion object {
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param title Parameter 1.
+         * @param fitnessPrograms Parameter 2.
+         * @return A new instance of fragment BlankFragment.
+         */
+        @JvmStatic
+        fun newInstance(dayIndex: Int, color: Int,  fitnessPrograms: FitnessProgram) =
+            FitnessProgramFinishFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_DAY_INDEX, dayIndex)
+                    putInt(ARG_COLOR, color)
+                    putParcelable(ARG_FITNESS_PROGRAMS, fitnessPrograms)
+                }
+            }
+    }
 }

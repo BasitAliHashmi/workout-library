@@ -38,6 +38,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -63,4 +69,21 @@ dependencies {
 
     //admob
     implementation("com.google.android.gms:play-services-ads:22.4.0")
+}
+
+/*java {
+    //withJavadocJar()
+    withSourcesJar()
+}*/
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.basit.libs"
+            artifactId = "workout-library"
+            version = "1.0.5"
+            afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+            //from(components["java"])
+        }
+    }
 }

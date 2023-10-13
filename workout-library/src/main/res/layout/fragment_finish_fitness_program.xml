@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="25dp"
+        app:cardCornerRadius="14dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardElevation="0dp"
+        app:contentPadding="20dp"
+        app:cardBackgroundColor="#FAFAFA">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/close_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView android:id="@+id/lbl_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fitness Program Title"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18dp"
+                android:textColor="#232323"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_close"
+                />
+
+            <TextView
+                android:id="@+id/lbl_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/pacifico"
+                android:text="Congratulations! Day 0 finished successfully"
+                android:textAlignment="center"
+                android:textColor="#8BC34A"
+                android:textSize="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_title" />
+
+            <TextView android:id="@+id/lbl_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading..."
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="18dp"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_day"
+                />
+
+            <TextView android:id="@+id/lbl_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="consider rate us!"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18dp"
+                android:textColor="#4D7CF2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_progress"
+                />
+
+
+            <com.google.android.material.button.MaterialButton android:id="@+id/btn_discover_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Discover More"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

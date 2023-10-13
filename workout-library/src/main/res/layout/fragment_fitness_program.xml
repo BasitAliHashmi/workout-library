@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    android:keepScreenOn="true">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_upper_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65"
+        />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toTopOf="@id/guideline_upper_area">
+
+        <ImageView android:id="@+id/workout_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp">
+
+            <ImageView android:id="@+id/btn_thumb_down"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_thumb_down_24"
+                android:background="@drawable/round_simple_gray"
+                android:padding="6dp"
+                app:tint="#fff"
+                />
+
+            <ImageView android:id="@+id/btn_thumb_up"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_thumb_up_24"
+                android:background="@drawable/round_simple_gray"
+                android:padding="6dp"
+                app:tint="#fff"
+                android:layout_marginStart="10dp"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <ImageView android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:layout_margin="20dp"
+            app:tint="#9A9A9A"
+            />
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_upper_area"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingTop="10dp">
+
+        <TextView android:id="@+id/lbl_ready_to_go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ready To Go"
+            android:textAllCaps="true"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="#2196F3"
+            />
+
+        <TextView android:id="@+id/lbl_workout_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Workout"
+            android:textAllCaps="true"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="16dp"
+            android:textColor="#434343"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_ready_to_go"
+            />
+
+        <TextView android:id="@+id/lbl_workout_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="52dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_workout_title"
+            />
+
+        <FrameLayout android:id="@+id/panel_standby_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_workout_timer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/circular_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="1"
+                app:indicatorColor="#2196F3"
+                app:indicatorDirectionCircular="counterclockwise"
+                app:indicatorSize="100dp"
+                />
+
+            <TextView android:id="@+id/lbl_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textAllCaps="true"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="30dp"
+                android:layout_gravity="center"
+                />
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat android:id="@+id/panel_workout_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_workout_timer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center">
+
+            <ImageView android:id="@+id/btn_previous_workout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/round_arrow_back_ios_24"
+                app:tint="#5A5A5A"
+                android:layout_marginEnd="30dp"
+                android:visibility="visible"
+                />
+
+            <FrameLayout android:id="@+id/btn_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_simple_blue"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView android:id="@+id/img_play"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/round_play_arrow_24"
+                    android:layout_margin="20dp"
+                    />
+
+            </FrameLayout>
+
+            <ImageView android:id="@+id/btn_next_workout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/round_arrow_forward_ios_24"
+                app:tint="#5A5A5A"
+                android:layout_marginStart="30dp"
+                android:visibility="visible"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/window_rest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E6021720"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_rest_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55"
+            />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guideline_rest_area"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/lbl_rest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Rest"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/lbl_rest_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="00:20"
+                android:textColor="@color/white"
+                android:textSize="64dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_increase_rest_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+20s"
+                    android:textAllCaps="false"
+                    app:backgroundTint="#E6021720"
+                    app:cornerRadius="100dp" />
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_skip_rest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skip"
+                    android:textColor="@color/black"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="100dp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <RelativeLayout android:id="@+id/window_rest_bottom_panel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_rest_area">
+
+            <TextView android:id="@+id/lbl_title_next_workout_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:textSize="11dp"
+                android:fontFamily="@font/roboto_medium"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:textColor="#202020"
+                />
+
+            <TextView android:id="@+id/lbl_title_next_workout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Workout"
+                android:textSize="14dp"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_below="@id/lbl_title_next_workout_number"
+                android:layout_marginStart="20dp"
+                android:textColor="#202020"
+                />
+
+            <com.google.android.material.card.MaterialCardView android:id="@+id/card_next_workout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#EAEAEA"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_below="@id/lbl_title_next_workout"
+                android:layout_above="@id/banner_add_view">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView android:id="@+id/image_next_workout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        />
+
+                    <TextView android:id="@+id/lbl_time_next_workout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 sec"
+                        android:textSize="11dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="#494949"
+                        android:background="#EAEAEA"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:layout_gravity="end|bottom"
+                        />
+
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <FrameLayout
+                android:id="@+id/banner_add_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout android:id="@+id/window_pause"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E6021720"
+        android:padding="20dp"
+        android:visibility="gone">
+
+        <ImageView android:id="@+id/btn_back_window_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:tint="@color/white"
+            />
+
+        <TextView android:id="@+id/lbl_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/btn_back_window_pause"
+            android:layout_marginTop="30dp"
+            android:text="Pause"
+            android:textColor="@color/white"
+            android:textSize="26dp"
+            android:fontFamily="@font/roboto_bold"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_restart_exercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Restart this exercise"
+            android:fontFamily="@font/roboto_medium"
+            android:textAlignment="textStart"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/lbl_pause"
+            app:backgroundTint="#135A78"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_quit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quit"
+            android:fontFamily="@font/roboto_medium"
+            android:textAlignment="textStart"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/btn_restart_exercise"
+            app:backgroundTint="#135A78"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="4dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_resume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resume"
+            android:fontFamily="@font/roboto_medium"
+            android:textAlignment="textStart"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/btn_quit"
+            app:backgroundTint="#135A78"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="4dp"
+            />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,13 @@
 package com.basit.workout
 
-import com.basit.workout_library.WorkoutLibraryApplication
+import android.app.Application
+import com.basit.workout_library.WorkoutLibrary
 
-class MyApp : WorkoutLibraryApplication() {
+class MyApp : Application() {
 
+    override fun onCreate() {
+        super.onCreate()
+        WorkoutLibrary.initialize(this)
+    }
 
 }

@@ -9,5 +9,6 @@ data class FitnessProgram (
     val title:String,
     val difficulty: FitnessProgramDifficulty,
     val days:List<FitnessProgramDay> = arrayListOf(),
-    val iconResourceId:Int
+    val iconResourceId:Int,
+    val color:Int
 ): Parcelable

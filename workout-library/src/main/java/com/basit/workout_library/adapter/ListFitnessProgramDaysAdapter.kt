@@ -15,8 +15,7 @@ import kotlin.math.ceil
 
 internal class ListFitnessProgramDaysAdapter(private val fitnessProgram: FitnessProgram,
                                     private val mContext: Context,
-                                    private val onClick: OnFitnessProgramClick,
-                                    private val color:Int
+                                    private val onClick: OnFitnessProgramClick
 ):RecyclerView.Adapter<ListFitnessProgramDaysAdapter.ViewHolder>() {
 
     internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -54,7 +53,7 @@ internal class ListFitnessProgramDaysAdapter(private val fitnessProgram: Fitness
         }
 
         holder.mainCard.setOnClickListener {
-            onClick.onDayClick(fitnessProgram, position, color)
+            onClick.onDayClick(fitnessProgram, position)
         }
     }
 }

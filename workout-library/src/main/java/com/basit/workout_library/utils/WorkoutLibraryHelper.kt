@@ -11,12 +11,10 @@ class WorkoutLibraryHelper {
 
     companion object {
 
-        internal var isSetupWithNavigationComponent = false
         internal var workoutLibraryTitle = ""
         internal var workoutLibraryFitnessPrograms:List<FitnessProgram> = arrayListOf()
 
         fun setupWithNavigationComponent(title:String, vararg fitnessPrograms: FitnessProgram) {
-            isSetupWithNavigationComponent = true
             workoutLibraryTitle = title
             workoutLibraryFitnessPrograms = fitnessPrograms.toCollection(ArrayList())
         }

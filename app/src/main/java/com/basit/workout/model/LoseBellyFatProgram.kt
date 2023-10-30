@@ -1,5 +1,6 @@
 package com.basit.workout.model
 
+import android.graphics.Color
 import com.basit.workout.R
 import com.basit.workout_library.models.FitnessProgram
 import com.basit.workout_library.models.FitnessProgramDay
@@ -13,7 +14,8 @@ class LoseBellyFatProgram {
 
         fun program(): FitnessProgram {
 
-            return FitnessProgram(1,
+            return FitnessProgram(
+                1,
                 "Lose Belly Fat",
                 FitnessProgramDifficulty.Beginner,
                 arrayListOf(
@@ -23,7 +25,8 @@ class LoseBellyFatProgram {
                     FitnessProgramDay.restDay(),
                     day5()
                 ),
-                R.drawable.fat_loss_model
+                R.drawable.fat_loss_model,
+                Color.parseColor("#164E7C")
             )
         }
 

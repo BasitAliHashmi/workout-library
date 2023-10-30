@@ -56,16 +56,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
-    //navigation
-    //implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    //implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
-
-    //Kotlin + coroutines
-    //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    //implementation("androidx.work:work-runtime-ktx:2.8.1")
-
     //glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    api("com.github.bumptech.glide:glide:4.16.0")
+
+    //navigation-component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
 
     //admob
     implementation("com.google.android.gms:play-services-ads:22.4.0")
@@ -81,7 +77,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.basit.libs"
             artifactId = "workout-library"
-            version = "1.0.5"
+            version = "1.0.6"
             afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
             //from(components["java"])
         }

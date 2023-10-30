@@ -6,19 +6,17 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
-//import androidx.navigation.fragment.findNavController
-//import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import com.basit.workout_library.R
 import com.basit.workout_library.SingleFitnessProgramActivity
-import com.basit.workout_library.WorkoutLibraryApplication
-import com.basit.workout_library.base.WorkoutLibBaseFragment
+import com.basit.workout_library.WorkoutLibrary
+import com.basit.workout_library.base.BaseWorkoutFrag
 import com.basit.workout_library.databinding.FragmentFitnessProgramBinding
 import com.basit.workout_library.models.FitnessProgram
 import com.basit.workout_library.models.FitnessProgramActivityState
@@ -33,21 +31,17 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.ImageViewTarget
 import kotlinx.coroutines.Job
 import java.time.LocalDateTime
-import java.util.Locale
 
-private const val ARG_DAY_INDEX = "param1"
-private const val ARG_COLOR = "param2"
-private const val ARG_FITNESS_PROGRAMS = "param3"
+private const val ARG_DAY_INDEX = "dayIndex"
+private const val ARG_FITNESS_PROGRAMS = "fitnessProgram"
 
-internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
+internal class FitnessProgramFragment : BaseWorkoutFrag() {
 
     private var paramFitnessPrograms: FitnessProgram? = null
-    private var paramColor: Int? = null
     private var paramDayIndex: Int? = null
 
     private lateinit var binding: FragmentFitnessProgramBinding
     private lateinit var viewModel: FitnessProgramViewModel
-    //private val args:FitnessProgramFragmentArgs by navArgs()
 
     private lateinit var workouts:List<Workout>
     private var dayIndex = -1
@@ -55,21 +49,16 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
     private var mCurrentState = FitnessProgramActivityState.None
     private var mLastState = FitnessProgramActivityState.None
 
-    private var mTextToSpeech: TextToSpeech? = null
-
     private var currentWorkoutPosition = 0
     private var currentTimerMaxSeconds = 0
     private var currentTimerSeconds = 0
     private var mTimerType = FitnessTimerType.Definite
-    private var textToSpeech = ""
-    private var textToSpeechInit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             paramDayIndex = it.getInt(ARG_DAY_INDEX)
-            paramColor = it.getInt(ARG_COLOR)
             paramFitnessPrograms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.getParcelable(ARG_FITNESS_PROGRAMS, FitnessProgram::class.java)
             } else {
@@ -84,10 +73,6 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFitnessProgramBinding.inflate(inflater, container, false)
-        /*viewModel = ViewModelProvider(
-            this,
-            FitnessProgramViewModelFactory((requireActivity().application as FatLossApp).workoutHistoryRepository)
-        )[FitnessProgramViewModel::class.java]*/
         viewModel = ViewModelProvider(this)[FitnessProgramViewModel::class.java]
 
         return binding.root
@@ -135,9 +120,7 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
                         "times"
                     }
 
-                    textToSpeech =
-                        "Ready to go, The next, ${firstItem.workoutLength}, $workoutUnit, ${firstItem.item.title}"
-
+                    speech("Ready to go, The next, ${firstItem.workoutLength}, $workoutUnit, ${firstItem.item.title}")
                     startTimer(10)
                 }
             }
@@ -179,7 +162,7 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
                         }
                     }
 
-                    WorkoutLibraryApplication.startTickingSoundEffect()
+                    WorkoutLibrary.getInstance().startTickingSoundEffect()
                 }
             }
 
@@ -227,14 +210,22 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
             FitnessProgramActivityState.Finish -> {
 
                 mBackPressCallback.remove()
-                (requireActivity() as SingleFitnessProgramActivity).launchFragment("finish")
-                /*findNavController().navigate(
+                /*(requireActivity() as SingleFitnessProgramActivity).launchFragment("finish")
+                findNavController().navigate(
                     FitnessProgramFragmentDirections.actionFitnessProgramToFinish(
                         args.dayIndex,
                         args.color,
                         args.fitnessProgram
                     )
                 )*/
+                val startDestinationArgs = Bundle().apply {
+                    putInt("dayIndex", paramDayIndex!!)
+                    putParcelable("fitnessProgram", paramFitnessPrograms)
+                }
+                findNavController().navigate(
+                    R.id.action_fitness_program_to_finish,
+                    startDestinationArgs
+                )
             }
 
             FitnessProgramActivityState.Pause -> {
@@ -242,7 +233,7 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
                 binding.windowPause.visibility = View.VISIBLE
                 binding.imgPlay.setImageResource(R.drawable.round_play_arrow_24)
 
-                mTextToSpeech?.stop()
+                //mTextToSpeech?.stop()
                 stopTimer(false)
             }
 
@@ -295,7 +286,7 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
             FitnessProgramActivityState.Rest
 
         updateActivityState(state)
-        WorkoutLibraryApplication.soundEffect(WorkoutLibraryApplication.soundEffectWorkoutFinish)
+        WorkoutLibrary.getInstance().soundEffect(WorkoutLibrary.soundEffectWorkoutFinish)
         workoutLoop()
     }
 
@@ -368,7 +359,7 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
             currentTimerSeconds = 0
         }
 
-        WorkoutLibraryApplication.stopTickingSoundEffect()
+        WorkoutLibrary.getInstance().stopTickingSoundEffect()
     }
 
     private fun setObservers() {
@@ -414,7 +405,7 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
                                     Handler(Looper.getMainLooper()).postDelayed({
 
                                         updateActivityState(FitnessProgramActivityState.Workout)
-                                        WorkoutLibraryApplication.soundEffect(WorkoutLibraryApplication.soundEffectWhistle)
+                                        WorkoutLibrary.getInstance().soundEffect(WorkoutLibrary.soundEffectWhistle)
                                         workoutLoop()
 
                                     }, 1000)
@@ -475,7 +466,6 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        initTextToSpeech()
 
         if (mLastState != FitnessProgramActivityState.None)
             updateActivityState(mLastState)
@@ -486,37 +476,18 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
     override fun onPause() {
         updateActivityState(FitnessProgramActivityState.Pause)
         workoutLoop()
-        mTextToSpeech?.stop()
-        mTextToSpeech?.shutdown()
         super.onPause()
     }
 
-    private fun initTextToSpeech() {
-        mTextToSpeech = TextToSpeech(
-            requireContext()
-        ) { status ->
-            if (status != TextToSpeech.ERROR) {
-                textToSpeechInit = true
-                mTextToSpeech?.language = Locale.US
-
-                if (currentTimerSeconds > 0 && mCurrentState == FitnessProgramActivityState.StandBy) {
-                    speech(textToSpeech)
-                }
-            }
-        }
-    }
-
     private fun speech(text:String) {
-        if (textToSpeechInit)
-            mTextToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+        WorkoutLibrary.getInstance().speech(text)
     }
 
     private fun getData() {
         val fitnessProgram = paramFitnessPrograms!!
         dayIndex = paramDayIndex!!
-        val color = paramColor!!
 
-        //(activity as BaseActivityFatLoss).updateStatusBarColor(Color.WHITE,true)
+        (requireActivity() as SingleFitnessProgramActivity).updateStatusBarColor(Color.WHITE,true)
         workouts = fitnessProgram.days[dayIndex].workouts
     }
 
@@ -636,11 +607,10 @@ internal class FitnessProgramFragment : WorkoutLibBaseFragment() {
          * @return A new instance of fragment BlankFragment.
          */
         @JvmStatic
-        fun newInstance(dayIndex: Int, color: Int,  fitnessPrograms: FitnessProgram) =
+        fun newInstance(dayIndex: Int, fitnessPrograms: FitnessProgram) =
             FitnessProgramFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_DAY_INDEX, dayIndex)
-                    putInt(ARG_COLOR, color)
                     putParcelable(ARG_FITNESS_PROGRAMS, fitnessPrograms)
                 }
             }

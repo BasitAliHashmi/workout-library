@@ -23,7 +23,7 @@ internal class ListFitnessProgramsAdapter(private val items:List<FitnessProgram>
                                  private val onClick: OnFitnessProgramClick
 ):RecyclerView.Adapter<ListFitnessProgramsAdapter.ViewHolder>() {
 
-    private var colorPalette:IntArray = WorkoutLibraryHelper.getFitnessProgramsColorPalette(mContext)
+    //private var colorPalette:IntArray = WorkoutLibraryHelper.getFitnessProgramsColorPalette(mContext)
 
     internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mainCard: MaterialCardView = itemView.findViewById(R.id.main_card)
@@ -82,11 +82,10 @@ internal class ListFitnessProgramsAdapter(private val items:List<FitnessProgram>
             .error(ColorDrawable(Color.CYAN))
             .into(holder.fitnessIcon)
 
-        val color = colorPalette[position % colorPalette.size]
-        holder.mainCard.setCardBackgroundColor(color)
+        holder.mainCard.setCardBackgroundColor(currentItem.color)
 
         //bind days
-        val adapter = ListFitnessProgramDaysAdapter(currentItem, mContext, onClick, color)
+        val adapter = ListFitnessProgramDaysAdapter(currentItem, mContext, onClick)
         holder.daysRecyclerView.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         holder.daysRecyclerView.adapter = adapter

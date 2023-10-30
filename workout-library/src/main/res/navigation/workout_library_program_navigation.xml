@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/workout_library_navigation"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/browse_day_frag_nav">
+
+    <fragment
+        android:id="@+id/browse_day_frag_nav"
+        android:name="com.basit.workout_library.fragment.BrowseFitnessProgramDayFragment"
+        android:label="Browse Day"
+        tools:layout="@layout/fragment_browse_fitness_program_day">
+        <action
+            android:id="@+id/action_browse_day_to_fitness_program"
+            app:destination="@id/fitness_program_frag_nav"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fitness_program_frag_nav"
+        android:name="com.basit.workout_library.fragment.FitnessProgramFragment"
+        android:label="Fitness Program"
+        tools:layout="@layout/fragment_fitness_program">
+        <action
+            android:id="@+id/action_fitness_program_to_finish"
+            app:destination="@id/finish_frag_nav"
+            app:popUpTo="@id/browse_day_frag_nav"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/finish_frag_nav"
+        android:name="com.basit.workout_library.fragment.FitnessProgramFinishFragment"
+        android:label="Finish"
+        tools:layout="@layout/fragment_finish_fitness_program">
+    </fragment>
+
+</navigation>

@@ -11,7 +11,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-abstract class WorkoutLibBaseFragment : Fragment() {
+abstract class BaseWorkoutFrag : Fragment() {
 
     private var mBannerAdView: AdView? = null
     private var initialLayoutComplete = false

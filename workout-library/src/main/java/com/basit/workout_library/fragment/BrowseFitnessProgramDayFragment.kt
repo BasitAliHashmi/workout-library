@@ -10,37 +10,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-//import androidx.navigation.fragment.findNavController
-//import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.basit.workout_library.R
 import com.basit.workout_library.SingleFitnessProgramActivity
 import com.basit.workout_library.adapter.FitnessProgramWorkoutsAdapter
-import com.basit.workout_library.base.WorkoutLibBaseFragment
+import com.basit.workout_library.base.BaseWorkoutFrag
 import com.basit.workout_library.databinding.FragmentBrowseFitnessProgramDayBinding
 import com.basit.workout_library.models.FitnessProgram
 import com.basit.workout_library.models.FitnessProgramDifficulty
 import com.basit.workout_library.utils.EmptySpaceAtBottomDecorator
 import com.bumptech.glide.Glide
 
-private const val ARG_DAY_INDEX = "param1"
-private const val ARG_COLOR = "param2"
-private const val ARG_FITNESS_PROGRAMS = "param3"
+private const val ARG_DAY_INDEX = "dayIndex"
+private const val ARG_FITNESS_PROGRAMS = "fitnessProgram"
 
-internal class BrowseFitnessProgramDayFragment : WorkoutLibBaseFragment() {
+internal class BrowseFitnessProgramDayFragment : BaseWorkoutFrag() {
 
     private var paramFitnessPrograms: FitnessProgram? = null
-    private var paramColor: Int? = null
     private var paramDayIndex: Int? = null
 
     private lateinit var binding: FragmentBrowseFitnessProgramDayBinding
-    //private val args: BrowseFitnessProgramDayFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             paramDayIndex = it.getInt(ARG_DAY_INDEX)
-            paramColor = it.getInt(ARG_COLOR)
             paramFitnessPrograms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.getParcelable(ARG_FITNESS_PROGRAMS, FitnessProgram::class.java)
             } else {
@@ -74,7 +70,6 @@ internal class BrowseFitnessProgramDayFragment : WorkoutLibBaseFragment() {
 
         val fitnessProgram = paramFitnessPrograms!!
         val dayIndex = paramDayIndex!!
-        val color = paramColor!!
 
         val alphaFull = 1.0f
         val alphaDim = 0.4f
@@ -103,16 +98,17 @@ internal class BrowseFitnessProgramDayFragment : WorkoutLibBaseFragment() {
         binding.lblDifficulty.text = fitnessProgram.difficulty.name
         binding.lblTitle.text = fitnessProgram.title
 
-        Glide.with(this)
+        Glide.with(requireContext())
             .load(fitnessProgram.iconResourceId)
             .placeholder(ColorDrawable(Color.CYAN))
             .error(ColorDrawable(Color.CYAN))
             .into(binding.imgIcon)
 
         //binding.mainCard.setCardBackgroundColor(color)
+        val color = paramFitnessPrograms!!.color
         binding.layoutRoot.setBackgroundColor(color)
         binding.btnStart.backgroundTintList = ColorStateList.valueOf(color)
-        //(activity as BaseActivityFatLoss).updateStatusBarColor(color, false)
+        (activity as SingleFitnessProgramActivity).updateStatusBarColor(color, false)
 
         //exercises
         val selectedDay = fitnessProgram.days[dayIndex]
@@ -134,7 +130,7 @@ internal class BrowseFitnessProgramDayFragment : WorkoutLibBaseFragment() {
             }
 
             binding.btnStart.setOnClickListener {
-                (requireActivity() as SingleFitnessProgramActivity).launchFragment("programStart")
+                //(requireActivity() as SingleFitnessProgramActivity).launchFragment("programStart")
                 /*findNavController().navigate(
                     BrowseFitnessProgramDayFragmentDirections.actionBrowseDayToFitnessProgram(
                         dayIndex,
@@ -142,6 +138,12 @@ internal class BrowseFitnessProgramDayFragment : WorkoutLibBaseFragment() {
                         fitnessProgram
                     )
                 )*/
+
+                val startDestinationArgs = Bundle().apply {
+                    putInt("dayIndex", dayIndex)
+                    putParcelable("fitnessProgram", fitnessProgram)
+                }
+                findNavController().navigate(R.id.action_browse_day_to_fitness_program, startDestinationArgs)
             }
         } else {
             binding.lblDay.text = "Rest day"
@@ -171,11 +173,10 @@ internal class BrowseFitnessProgramDayFragment : WorkoutLibBaseFragment() {
          * @return A new instance of fragment BlankFragment.
          */
         @JvmStatic
-        fun newInstance(dayIndex: Int, color: Int,  fitnessPrograms: FitnessProgram) =
+        fun newInstance(dayIndex: Int,  fitnessPrograms: FitnessProgram) =
             BrowseFitnessProgramDayFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_DAY_INDEX, dayIndex)
-                    putInt(ARG_COLOR, color)
                     putParcelable(ARG_FITNESS_PROGRAMS, fitnessPrograms)
                 }
             }

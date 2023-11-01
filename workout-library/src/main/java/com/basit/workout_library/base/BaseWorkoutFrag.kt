@@ -7,6 +7,8 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.basit.workout_library.utils.WorkoutLibraryHelper
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,9 +38,8 @@ abstract class BaseWorkoutFrag : Fragment() {
         alertDialog.show()
     }
 
-    protected fun showBannerAdd(containerView: FrameLayout) {
-        /*if (Helper.ADD_SDK_INIT) {
-
+    protected fun showBannerAdd(containerView: FrameLayout, bannerAdUnitId:String?) {
+        if (bannerAdUnitId != null) {
             mBannerAdView = AdView(requireContext())
             containerView.addView(mBannerAdView)
 
@@ -48,7 +49,7 @@ abstract class BaseWorkoutFrag : Fragment() {
                 if (!initialLayoutComplete) {
                     initialLayoutComplete = true
 
-                    mBannerAdView?.adUnitId = getString(R.string.admobbannerad)
+                    mBannerAdView?.adUnitId = bannerAdUnitId
                     mBannerAdView?.setAdSize(calculateAdaptiveBannerAdSize(containerView))
 
                     val adRequest = AdRequest
@@ -59,7 +60,7 @@ abstract class BaseWorkoutFrag : Fragment() {
                     mBannerAdView?.loadAd(adRequest)
                 }
             }
-        }*/
+        }
     }
 
     private fun calculateAdaptiveBannerAdSize(view: FrameLayout): AdSize {

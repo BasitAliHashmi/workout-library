@@ -55,5 +55,5 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
 
     implementation(project(mapOf("path" to ":workout-library")))
-    //implementation("com.github.BasitAliHashmi:workout-library:1.0.5")
+    //implementation("com.github.BasitAliHashmi:workout-library:1.0.6")
 }

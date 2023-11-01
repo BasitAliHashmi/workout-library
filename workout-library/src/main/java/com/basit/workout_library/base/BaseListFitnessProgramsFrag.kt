@@ -19,6 +19,8 @@ import com.basit.workout_library.utils.WorkoutLibraryExtensions.showHorizontalPr
 abstract class BaseListFitnessProgramsFrag : BaseWorkoutFrag(), OnFitnessProgramClick {
 
     protected var paramTitle: String? = null
+    protected var paramAdmobBannerAdUnitId: String? = null
+    protected var paramEnableAdds: Boolean = false
     protected var paramFitnessPrograms: List<FitnessProgram>? = null
 
     private lateinit var binding: FragmentListFitnessProgramsBinding
@@ -55,16 +57,18 @@ abstract class BaseListFitnessProgramsFrag : BaseWorkoutFrag(), OnFitnessProgram
         binding.lblTitle.text = paramTitle
     }
 
-    fun addListener(fitnessProgramListener: FitnessProgramListener){
-        WorkoutLibrary.getInstance().mFitnessProgramListener = fitnessProgramListener
-    }
-
     override fun onDayClick(fitnessProgram: FitnessProgram, dayIndex: Int) {
-        WorkoutLibrary.getInstance().mFitnessProgramListener?.onFitnessProgramStart()
+
+        if (requireActivity() is FitnessProgramListener) {
+            WorkoutLibrary.getInstance().mFitnessProgramListener = requireActivity() as FitnessProgramListener
+            WorkoutLibrary.getInstance().mFitnessProgramListener?.onFitnessProgramDaySelect(fitnessProgram, dayIndex)
+        }
 
         val intent = Intent(requireContext(), SingleFitnessProgramActivity::class.java)
         intent.putExtra("fitnessProgram", fitnessProgram)
         intent.putExtra("dayIndex", dayIndex)
+        intent.putExtra("bannerUnitId", paramAdmobBannerAdUnitId)
+        intent.putExtra("enableAdds", paramEnableAdds)
 
         getResultSingleFitnessProgramActivity.launch(intent)
     }

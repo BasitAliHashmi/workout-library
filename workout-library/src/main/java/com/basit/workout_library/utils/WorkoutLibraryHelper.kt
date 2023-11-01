@@ -11,14 +11,6 @@ class WorkoutLibraryHelper {
 
     companion object {
 
-        internal var workoutLibraryTitle = ""
-        internal var workoutLibraryFitnessPrograms:List<FitnessProgram> = arrayListOf()
-
-        fun setupWithNavigationComponent(title:String, vararg fitnessPrograms: FitnessProgram) {
-            workoutLibraryTitle = title
-            workoutLibraryFitnessPrograms = fitnessPrograms.toCollection(ArrayList())
-        }
-
         internal fun getFitnessProgramsColorPalette(context: Context): IntArray {
             val colorPaletteArray =
                 context.resources.obtainTypedArray(R.array.fitness_program_color_palette)

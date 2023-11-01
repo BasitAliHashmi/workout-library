@@ -1,0 +1,3 @@
+<resources>
+    <public name="workout_library_navigation" type="navigation" />
+</resources>

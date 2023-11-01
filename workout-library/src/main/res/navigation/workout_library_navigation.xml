@@ -6,8 +6,8 @@
     app:startDestination="@id/list_fitness_programs_frag_nav">
 
     <fragment android:id="@+id/list_fitness_programs_frag_nav"
-        android:name="com.basit.workout_library.fragment.NavListFitnessProgramsFragment"
-        android:label="Browse Day"
+        android:name="com.basit.workout_library.fragment.ListFitnessProgramsFragment"
+        android:label="List Fitness Programs"
         tools:layout="@layout/fragment_list_fitness_programs">
     </fragment>
 

@@ -5,6 +5,8 @@ import android.media.AudioAttributes
 import android.media.SoundPool
 import android.speech.tts.TextToSpeech
 import com.basit.workout_library.listeners.FitnessProgramListener
+import com.basit.workout_library.utils.WorkoutLibraryHelper
+import com.google.android.gms.ads.MobileAds
 import java.util.Locale
 
 class WorkoutLibrary private constructor() {
@@ -124,38 +126,5 @@ class WorkoutLibrary private constructor() {
 
     //endregion
 
-    /*
-    override fun onCreate() {
-        super.onCreate()
-
-        Helper.SHOW_ADDS =
-            UserPreferences(this).getValueBoolean(UserPreferences.KEY_SHOW_ADS_BOOL, true)
-        Helper.INTERSTITIAL_REPEAT_DELAY_SECS =
-            UserPreferences(this).getValueInt(UserPreferences.KEY_INTERSTITIAL_REPEAT_DELAY_INT, 60)
-        Helper.INTERSTITIAL_AFTER_EXIT_ACTIVITY = UserPreferences(this).getValueBoolean(
-            UserPreferences.KEY_SHOW_INTERSTITIAL_AFTER_EXIT_BOOL,
-            true
-        )
-
-        if (Helper.enableFirebaseAnalytics) {
-            firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-            firebaseAnalytics!!.setAnalyticsCollectionEnabled(true)
-        }
-
-        if (Helper.enableFirebaseCloudMessaging) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-                    Firebase.messaging.isAutoInitEnabled = true
-                }
-            } else {
-                Firebase.messaging.isAutoInitEnabled = true
-            }
-        }
-
-        if (BuildConfig.DEBUG)
-            Helper.SHOW_ADDS = false
-
-        initializeSoundPool()
-    }*/
 
 }

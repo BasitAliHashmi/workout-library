@@ -168,7 +168,10 @@ internal class FitnessProgramFragment : BaseWorkoutFrag() {
 
             FitnessProgramActivityState.Rest -> {
 
-                showBannerAdd(binding.bannerAddView)
+                val parentActivity = (requireActivity() as SingleFitnessProgramActivity)
+                if (parentActivity.addSdkInit()) {
+                    showBannerAdd(binding.bannerAddView, parentActivity.getBannerAdUnitId())
+                }
 
                 val nextWorkoutIndex = currentWorkoutPosition + 1
                 val nextWorkout = workouts[nextWorkoutIndex]
@@ -594,26 +597,6 @@ internal class FitnessProgramFragment : BaseWorkoutFrag() {
         mCurrentState = state
 
         //Log.d(TAG, "state: ${mCurrentState.name} prev: ${mLastState.name}")
-    }
-
-    companion object {
-
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param title Parameter 1.
-         * @param fitnessPrograms Parameter 2.
-         * @return A new instance of fragment BlankFragment.
-         */
-        @JvmStatic
-        fun newInstance(dayIndex: Int, fitnessPrograms: FitnessProgram) =
-            FitnessProgramFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_DAY_INDEX, dayIndex)
-                    putParcelable(ARG_FITNESS_PROGRAMS, fitnessPrograms)
-                }
-            }
     }
 
 }

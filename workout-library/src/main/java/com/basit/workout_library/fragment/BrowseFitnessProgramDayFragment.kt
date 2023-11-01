@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.basit.workout_library.R
 import com.basit.workout_library.SingleFitnessProgramActivity
+import com.basit.workout_library.WorkoutLibrary
 import com.basit.workout_library.adapter.FitnessProgramWorkoutsAdapter
 import com.basit.workout_library.base.BaseWorkoutFrag
 import com.basit.workout_library.databinding.FragmentBrowseFitnessProgramDayBinding
@@ -130,14 +131,6 @@ internal class BrowseFitnessProgramDayFragment : BaseWorkoutFrag() {
             }
 
             binding.btnStart.setOnClickListener {
-                //(requireActivity() as SingleFitnessProgramActivity).launchFragment("programStart")
-                /*findNavController().navigate(
-                    BrowseFitnessProgramDayFragmentDirections.actionBrowseDayToFitnessProgram(
-                        dayIndex,
-                        color,
-                        fitnessProgram
-                    )
-                )*/
 
                 val startDestinationArgs = Bundle().apply {
                     putInt("dayIndex", dayIndex)

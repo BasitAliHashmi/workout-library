@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FitnessProgramDay(
-    val restDay:Boolean,
+    val restDay:Boolean = false,
     val workouts:List<Workout> = arrayListOf()
 ) : Parcelable {
     //var totalSeconds:Int = 0

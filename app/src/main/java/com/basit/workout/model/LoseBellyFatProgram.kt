@@ -51,7 +51,7 @@ class LoseBellyFatProgram {
             list.add(Workout(SimpleWorkout.Plank, WorkoutType.Timed, 20))
             list.add(Workout(SimpleWorkout.Crunches, WorkoutType.Timed, 20))
 
-            return FitnessProgramDay(false, list)
+            return FitnessProgramDay(workouts = list)
         }
 
         private fun day2(): FitnessProgramDay {
@@ -74,7 +74,7 @@ class LoseBellyFatProgram {
             list.add(Workout(SimpleWorkout.Crunches, WorkoutType.Timed, 20))
 
 
-            return FitnessProgramDay( false, list)
+            return FitnessProgramDay(workouts = list)
         }
 
         private fun day3(): FitnessProgramDay {
@@ -97,7 +97,7 @@ class LoseBellyFatProgram {
             list.add(Workout(SimpleWorkout.Plank, WorkoutType.Timed, 20))
             list.add(Workout(SimpleWorkout.Crunches, WorkoutType.Timed, 20))
 
-            return FitnessProgramDay( false, list)
+            return FitnessProgramDay(workouts = list)
         }
 
         private fun day5(): FitnessProgramDay {
@@ -123,7 +123,7 @@ class LoseBellyFatProgram {
 
 
 
-            return FitnessProgramDay( false, list)
+            return FitnessProgramDay(workouts = list)
         }
 
         //endregion

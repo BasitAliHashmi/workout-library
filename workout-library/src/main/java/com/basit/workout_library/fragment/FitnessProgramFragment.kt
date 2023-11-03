@@ -23,7 +23,7 @@ import com.basit.workout_library.models.FitnessProgramActivityState
 import com.basit.workout_library.models.FitnessTimerType
 import com.basit.workout_library.models.TimerTickState
 import com.basit.workout_library.models.Workout
-import com.basit.workout_library.models.WorkoutHistory
+import com.basit.workout_library.core.domain.model.WorkoutHistory
 import com.basit.workout_library.models.WorkoutType
 import com.basit.workout_library.utils.WorkoutLibraryHelper
 import com.bumptech.glide.Glide
@@ -73,7 +73,12 @@ internal class FitnessProgramFragment : BaseWorkoutFrag() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFitnessProgramBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[FitnessProgramViewModel::class.java]
+        //viewModel = ViewModelProvider(this)[FitnessProgramViewModel::class.java]
+
+        viewModel = ViewModelProvider(
+            this,
+            FitnessProgramViewModelFactory(WorkoutLibrary.getInstance().workoutHistoryRepository)
+        )[FitnessProgramViewModel::class.java]
 
         return binding.root
     }

@@ -10,7 +10,6 @@ import com.basit.workout.model.LoseBellyFatProgram
 import com.basit.workout_library.fragment.ListFitnessProgramsFragment
 import com.basit.workout_library.listeners.FitnessProgramListener
 import com.basit.workout_library.models.FitnessProgram
-import com.basit.workout_library.utils.WorkoutLibraryHelper
 
 class MainActivity : AppCompatActivity(), FitnessProgramListener {
 
@@ -24,7 +23,8 @@ class MainActivity : AppCompatActivity(), FitnessProgramListener {
         setContentView(binding.root)
 
         //createWorkoutFragment()
-        initNavComponent()
+        //initFitnessProgramNavComponent()
+        initReportsNavComponent()
     }
 
     private fun createWorkoutFragment() {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), FitnessProgramListener {
         trans.commit()
     }
 
-    private fun initNavComponent() {
+    private fun initFitnessProgramNavComponent() {
         navController = findNavController(R.id.nav_container)
 
         //navController.popBackStack()
@@ -49,6 +49,25 @@ class MainActivity : AppCompatActivity(), FitnessProgramListener {
             putString("param_title", "Nav Component")
             putString("param_admob_banner_unit_id", null)
             putBoolean("param_enable_adds", false)
+            putParcelableArrayList(
+                "param_fitness_programs",
+                arrayListOf(
+                    LoseBellyFatProgram.program(),
+                    LoseBellyFatProgram.program(),
+                    LoseBellyFatProgram.program()
+                )
+            )
+        }
+
+        //navController.navigate(com.basit.workout_library.R.id.workout_library_navigation)
+        navController.setGraph(R.navigation.my_nav, destinationArgs)
+    }
+
+    private fun initReportsNavComponent() {
+        navController = findNavController(R.id.nav_container)
+
+        //navController.popBackStack()
+        val destinationArgs = Bundle().apply {
             putParcelableArrayList(
                 "param_fitness_programs",
                 arrayListOf(

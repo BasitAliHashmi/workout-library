@@ -11,6 +11,8 @@ class WorkoutLibraryHelper {
 
     companion object {
 
+        var ReportsProgramSelectorShown = false
+
         internal fun getFitnessProgramsColorPalette(context: Context): IntArray {
             val colorPaletteArray =
                 context.resources.obtainTypedArray(R.array.fitness_program_color_palette)

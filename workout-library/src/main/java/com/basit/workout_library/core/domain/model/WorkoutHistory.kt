@@ -1,11 +1,11 @@
-package com.basit.workout_library.models
+package com.basit.workout_library.core.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
 @Parcelize
-data class WorkoutHistory(
+internal data class WorkoutHistory(
     val id: Int,
     val programId: Int,
     val day: Int,

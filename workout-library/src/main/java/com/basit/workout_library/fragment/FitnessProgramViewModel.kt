@@ -3,9 +3,10 @@ package com.basit.workout_library.fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.basit.workout_library.core.domain.WorkoutHistoryRepository
 import com.basit.workout_library.models.TimerTickState
-import com.basit.workout_library.models.WorkoutHistory
-import com.basit.workout_library.models.WorkoutSummary
+import com.basit.workout_library.core.domain.model.WorkoutHistory
+import com.basit.workout_library.core.domain.model.WorkoutSummary
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-internal class FitnessProgramViewModel: ViewModel() {
+internal class FitnessProgramViewModel(private val workoutHistoryRepository: WorkoutHistoryRepository): ViewModel() {
 
     val tick = MutableLiveData<TimerTickState>()
     val summaryReport = MutableLiveData<List<WorkoutSummary>>()
@@ -47,17 +48,17 @@ internal class FitnessProgramViewModel: ViewModel() {
     }
 
     fun addHistory(model: WorkoutHistory) = viewModelScope.launch {
-        //workoutHistoryRepository.insert(model)
+        workoutHistoryRepository.insert(model)
     }
 
     fun getSummarizedReport(from: LocalDateTime, to: LocalDateTime, programId:Int) = viewModelScope.launch {
-        /*val data = workoutHistoryRepository.getSummarizedReport(from, to, programId)
-        summaryReport.postValue(createEmptyDays(data, from, to))*/
+        val data = workoutHistoryRepository.getSummarizedReport(from, to, programId)
+        summaryReport.postValue(createEmptyDays(data, from, to))
     }
 
     fun getSummarizedReport(dateFor: LocalDateTime, programId:Int, dayNo:Int) = viewModelScope.launch {
-        /*val data = workoutHistoryRepository.getSummarizedReport(dateFor, programId, dayNo)
-        singleDaySummaryReport.postValue(data)*/
+        val data = workoutHistoryRepository.getSummarizedReport(dateFor, programId, dayNo)
+        singleDaySummaryReport.postValue(data)
     }
 
     private fun createEmptyDays(summaryList:List<WorkoutSummary>, dateFrom: LocalDateTime, dateTo: LocalDateTime):List<WorkoutSummary> {

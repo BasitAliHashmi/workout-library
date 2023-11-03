@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
     id("maven-publish")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -64,6 +65,14 @@ dependencies {
 
     //admob
     implementation("com.google.android.gms:play-services-ads:22.4.0")
+
+    //MP Charts
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    //Room
+    implementation("androidx.room:room-runtime:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
 }
 
 /*java {
@@ -76,7 +85,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.basit.libs"
             artifactId = "workout-library"
-            version = "1.0.7"
+            version = "1.0.8"
             afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
             //from(components["java"])
         }

@@ -2,8 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/my_nav"
-    app:startDestination="@id/workout_library_navigation">
+    app:startDestination="@id/workout_library_reports">
 
     <include app:graph="@navigation/workout_library_navigation" />
+
+    <include app:graph="@navigation/workout_library_reports" />
 
 </navigation>

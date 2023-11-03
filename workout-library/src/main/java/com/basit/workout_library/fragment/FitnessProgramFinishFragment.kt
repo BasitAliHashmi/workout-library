@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.basit.workout_library.SingleFitnessProgramActivity
+import com.basit.workout_library.WorkoutLibrary
 //import androidx.navigation.fragment.navArgs
 import com.basit.workout_library.base.BaseWorkoutFrag
 import com.basit.workout_library.databinding.FragmentFinishFitnessProgramBinding
@@ -47,7 +48,13 @@ internal class FitnessProgramFinishFragment : BaseWorkoutFrag() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFinishFitnessProgramBinding.inflate(inflater,container,false)
-        viewModel = ViewModelProvider(this)[FitnessProgramViewModel::class.java]
+        //viewModel = ViewModelProvider(this)[FitnessProgramViewModel::class.java]
+
+        viewModel = ViewModelProvider(
+            this,
+            FitnessProgramViewModelFactory(WorkoutLibrary.getInstance().workoutHistoryRepository)
+        )[FitnessProgramViewModel::class.java]
+
         return binding.root
     }
 

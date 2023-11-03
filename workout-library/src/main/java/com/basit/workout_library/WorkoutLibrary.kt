@@ -4,12 +4,23 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.speech.tts.TextToSpeech
+import com.basit.workout_library.core.data.AppDatabase
+import com.basit.workout_library.core.domain.WorkoutHistoryRepository
+import com.basit.workout_library.core.domain.workouthistory.WorkoutHistoryLocalDataSource
 import com.basit.workout_library.listeners.FitnessProgramListener
-import com.basit.workout_library.utils.WorkoutLibraryHelper
-import com.google.android.gms.ads.MobileAds
 import java.util.Locale
 
-class WorkoutLibrary private constructor() {
+class WorkoutLibrary private constructor(context: Context) {
+
+    private val database by lazy { AppDatabase.getInstance(context) }
+
+    internal val workoutHistoryRepository by lazy {
+        WorkoutHistoryRepository(
+            localDataSource = WorkoutHistoryLocalDataSource(
+                database.workoutHistoryDao()
+            )
+        )
+    }
 
     private lateinit var mSoundPool: SoundPool
     private var mTextToSpeech: TextToSpeech? = null
@@ -31,7 +42,7 @@ class WorkoutLibrary private constructor() {
 
         fun initialize(context: Context): WorkoutLibrary =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: WorkoutLibrary().also {
+                INSTANCE ?: WorkoutLibrary(context).also {
                     INSTANCE = it
 
                     INSTANCE!!.initSoundPool(context)

@@ -3,8 +3,8 @@ package com.basit.workout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+//import androidx.navigation.NavController
+//import androidx.navigation.findNavController
 import com.basit.workout.databinding.ActivityMainBinding
 import com.basit.workout.model.LoseBellyFatProgram
 import com.basit.workout_library.fragment.ListFitnessProgramsFragment
@@ -15,16 +15,16 @@ class MainActivity : AppCompatActivity(), FitnessProgramListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var workoutFragment: ListFitnessProgramsFragment
-    private lateinit var navController: NavController
+    //private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //createWorkoutFragment()
+        createWorkoutFragment()
         //initFitnessProgramNavComponent()
-        initReportsNavComponent()
+        //initReportsNavComponent()
     }
 
     private fun createWorkoutFragment() {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), FitnessProgramListener {
         trans.commit()
     }
 
-    private fun initFitnessProgramNavComponent() {
+    /*private fun initFitnessProgramNavComponent() {
         navController = findNavController(R.id.nav_container)
 
         //navController.popBackStack()
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), FitnessProgramListener {
 
         //navController.navigate(com.basit.workout_library.R.id.workout_library_navigation)
         navController.setGraph(R.navigation.my_nav, destinationArgs)
-    }
+    }*/
 
     override fun onFitnessProgramDaySelect(fitnessProgram: FitnessProgram, dayIndex: Int) {
         Toast.makeText(this@MainActivity, "i day selected", Toast.LENGTH_SHORT).show()

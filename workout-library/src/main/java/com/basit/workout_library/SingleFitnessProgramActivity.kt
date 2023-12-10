@@ -1,6 +1,5 @@
 package com.basit.workout_library
 
-import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,14 +9,15 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.basit.workout_library.databinding.ActivitySingleFitnessProgramBinding
 import com.basit.workout_library.models.FitnessProgram
-import com.basit.workout_library.utils.WorkoutLibraryHelper
-import com.google.android.gms.ads.MobileAds
 
-internal class SingleFitnessProgramActivity : AppCompatActivity() {
+class SingleFitnessProgramActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySingleFitnessProgramBinding
     private lateinit var navController: NavController
+
     private var mAddSkdInit = false
+    private var mSingleDayProgram = false
+    private var mAdmobBannerAdUnitId:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +26,10 @@ internal class SingleFitnessProgramActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         navController = findNavController(R.id.nav_container)
+        mAddSkdInit = intent.getBooleanExtra("enableAdds", false)
+        mSingleDayProgram = intent.getBooleanExtra("singleDayProgram", false)
+        mAdmobBannerAdUnitId = intent.getStringExtra("bannerUnitId")
         setNavGraph()
-
-        if (intent.getBooleanExtra("enableAdds", false)) {
-            MobileAds.initialize(applicationContext) { mAddSkdInit = true }
-        }
     }
 
     private fun setNavGraph() {
@@ -40,15 +39,27 @@ internal class SingleFitnessProgramActivity : AppCompatActivity() {
             intent.getParcelableExtra("fitnessProgram")
         }
 
-        val startDestinationArgs = Bundle().apply {
-            putInt("dayIndex", intent.getIntExtra("dayIndex", 0))
-            putParcelable("fitnessProgram", fitnessProgram)
+        val startDestinationArgs = if (!mSingleDayProgram){
+            Bundle().apply {
+                putInt("dayIndex", intent.getIntExtra("dayIndex", 0))
+                putParcelable("fitnessProgram", fitnessProgram)
+            }
+        } else {
+            Bundle().apply {
+                putInt("dayIndex", 0)
+                putBoolean("singleDayProgram", true)
+                putParcelable("fitnessProgram", fitnessProgram)
+            }
         }
-        navController.setGraph(R.navigation.workout_library_program_navigation, startDestinationArgs)
+
+        navController.setGraph(
+            R.navigation.workout_library_program_navigation,
+            startDestinationArgs
+        )
     }
 
     fun getBannerAdUnitId():String? {
-        return intent.getStringExtra("bannerUnitId")
+        return mAdmobBannerAdUnitId
     }
 
     fun addSdkInit():Boolean {

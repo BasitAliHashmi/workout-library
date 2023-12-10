@@ -25,11 +25,13 @@ import com.bumptech.glide.Glide
 
 private const val ARG_DAY_INDEX = "dayIndex"
 private const val ARG_FITNESS_PROGRAMS = "fitnessProgram"
+private const val ARG_SINGLE_DAY_PROGRAM = "singleDayProgram"
 
 internal class BrowseFitnessProgramDayFragment : BaseWorkoutFrag() {
 
     private var paramFitnessPrograms: FitnessProgram? = null
     private var paramDayIndex: Int? = null
+    private var paramSingleDayProgram = false
 
     private lateinit var binding: FragmentBrowseFitnessProgramDayBinding
 
@@ -38,6 +40,7 @@ internal class BrowseFitnessProgramDayFragment : BaseWorkoutFrag() {
 
         arguments?.let {
             paramDayIndex = it.getInt(ARG_DAY_INDEX)
+            paramSingleDayProgram = it.getBoolean(ARG_SINGLE_DAY_PROGRAM,false)
             paramFitnessPrograms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.getParcelable(ARG_FITNESS_PROGRAMS, FitnessProgram::class.java)
             } else {
@@ -114,7 +117,11 @@ internal class BrowseFitnessProgramDayFragment : BaseWorkoutFrag() {
         //exercises
         val selectedDay = fitnessProgram.days[dayIndex]
         if (!selectedDay.restDay) {
-            binding.lblDay.text = "Day ${dayIndex + 1}"
+            if (!paramSingleDayProgram)
+                binding.lblDay.text = "Day ${dayIndex + 1}"
+            else
+                binding.lblDay.visibility = View.GONE
+
             val workoutAdapter =
                 FitnessProgramWorkoutsAdapter(
                     selectedDay.workouts,
@@ -136,7 +143,10 @@ internal class BrowseFitnessProgramDayFragment : BaseWorkoutFrag() {
                     putInt("dayIndex", dayIndex)
                     putParcelable("fitnessProgram", fitnessProgram)
                 }
-                findNavController().navigate(R.id.action_browse_day_to_fitness_program, startDestinationArgs)
+                findNavController().navigate(
+                    R.id.action_browse_day_to_fitness_program,
+                    startDestinationArgs
+                )
             }
         } else {
             binding.lblDay.text = "Rest day"

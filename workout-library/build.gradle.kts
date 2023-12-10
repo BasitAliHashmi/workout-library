@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.basit.workout_library"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26
@@ -47,32 +47,36 @@ android {
 }
 
 dependencies {
+    val roomVersion = "2.6.1"
+    val navComponentVersion = "2.7.5"
+    val glideVersion = "4.16.0"
 
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.annotation:annotation:1.6.0")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.annotation:annotation:1.7.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
     //glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:glide:$glideVersion")
+    ksp("com.github.bumptech.glide:compiler:$glideVersion")
 
     //navigation-component
-    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
+    api("androidx.navigation:navigation-fragment-ktx:$navComponentVersion")
+    api("androidx.navigation:navigation-ui-ktx:$navComponentVersion")
 
     //admob
-    implementation("com.google.android.gms:play-services-ads:22.4.0")
+    implementation("com.google.android.gms:play-services-ads:22.6.0")
 
     //MP Charts
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    api("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     //Room
-    implementation("androidx.room:room-runtime:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
+    api("androidx.room:room-runtime:$roomVersion")
+    api("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 }
 
 /*java {
@@ -85,7 +89,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.basit.libs"
             artifactId = "workout-library"
-            version = "1.0.9"
+            version = "1.1.0"
             afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
             //from(components["java"])
         }

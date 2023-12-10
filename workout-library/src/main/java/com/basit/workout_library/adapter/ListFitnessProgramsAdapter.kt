@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.basit.workout_library.R
 import com.basit.workout_library.models.FitnessProgram
 import com.basit.workout_library.models.FitnessProgramDifficulty
+import com.basit.workout_library.utils.EmptySpaceAtBottomDecorator
 import com.basit.workout_library.utils.OnFitnessProgramClick
 import com.basit.workout_library.utils.WorkoutLibraryHelper
 import com.bumptech.glide.Glide
@@ -89,6 +90,7 @@ internal class ListFitnessProgramsAdapter(private val items:List<FitnessProgram>
         holder.daysRecyclerView.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         holder.daysRecyclerView.adapter = adapter
+        holder.daysRecyclerView.addItemDecoration(EmptySpaceAtBottomDecorator(120))
     }
 
 }

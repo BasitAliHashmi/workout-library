@@ -7,7 +7,6 @@ import android.speech.tts.TextToSpeech
 import com.basit.workout_library.core.data.AppDatabase
 import com.basit.workout_library.core.domain.WorkoutHistoryRepository
 import com.basit.workout_library.core.domain.workouthistory.WorkoutHistoryLocalDataSource
-import com.basit.workout_library.listeners.FitnessProgramListener
 import java.util.Locale
 
 class WorkoutLibrary private constructor(context: Context) {
@@ -28,9 +27,6 @@ class WorkoutLibrary private constructor(context: Context) {
     private var mTtsInit = false
     private var mSoundEffectTicking: Int = 0
     private var mSoundEffectTickingStreamId: Int = 0
-
-    //listener
-    var mFitnessProgramListener: FitnessProgramListener? = null
 
     companion object {
 

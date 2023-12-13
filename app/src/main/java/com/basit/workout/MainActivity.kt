@@ -1,5 +1,6 @@
 package com.basit.workout
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -7,9 +8,11 @@ import android.widget.Toast
 //import androidx.navigation.findNavController
 import com.basit.workout.databinding.ActivityMainBinding
 import com.basit.workout.model.LoseBellyFatProgram
+import com.basit.workout.model.MiniWakeupWorkoutProgram
 import com.basit.workout_library.fragment.ListFitnessProgramsFragment
 import com.basit.workout_library.listeners.FitnessProgramListener
 import com.basit.workout_library.models.FitnessProgram
+import com.basit.workout_library.models.MiniWorkoutCardOptions
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,7 +30,10 @@ class MainActivity : AppCompatActivity() {
     private fun createWorkoutFragment() {
 
         workoutFragment = ListFitnessProgramsFragment.newInstance(
-            LoseBellyFatProgram.program()
+            miniWorkoutCardOptions = MiniWorkoutCardOptions(cardTitle = "Mini Workout's"),
+            LoseBellyFatProgram.program(),
+            MiniWakeupWorkoutProgram.program(),
+            MiniWakeupWorkoutProgram.program()
         )
 
         val trans = supportFragmentManager.beginTransaction()
@@ -36,7 +42,8 @@ class MainActivity : AppCompatActivity() {
 
         workoutFragment.addListener(object : FitnessProgramListener {
             override fun onFitnessProgramDaySelect(fitnessProgram: FitnessProgram, dayIndex: Int) {
-                Toast.makeText(this@MainActivity, "$dayIndex day selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "$dayIndex day selected", Toast.LENGTH_SHORT)
+                    .show()
             }
 
             override fun onFitnessProgramEnd(resultCode: Int) {

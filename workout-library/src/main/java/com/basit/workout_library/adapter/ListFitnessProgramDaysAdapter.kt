@@ -53,7 +53,7 @@ internal class ListFitnessProgramDaysAdapter(private val fitnessProgram: Fitness
         }
 
         holder.mainCard.setOnClickListener {
-            onClick.onDayClick(fitnessProgram, position)
+            onClick.onItemClick(fitnessProgram, position)
         }
     }
 }

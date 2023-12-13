@@ -15,15 +15,19 @@ import com.basit.workout_library.base.BaseWorkoutFrag
 import com.basit.workout_library.databinding.FragmentListFitnessProgramsBinding
 import com.basit.workout_library.listeners.FitnessProgramListener
 import com.basit.workout_library.models.FitnessProgram
+import com.basit.workout_library.models.MiniWorkoutCardOptions
 import com.basit.workout_library.utils.OnFitnessProgramClick
 import com.basit.workout_library.utils.WorkoutLibraryExtensions.showHorizontalPreview
 import java.util.ArrayList
 
 private const val ARG_FITNESS_PROGRAMS = "param_fitness_programs"
+private const val ARG_MINI_WORKOUT_CARD_OPTIONS = "param_mini_workout_card_options"
 
 class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
 
     private var paramFitnessPrograms: List<FitnessProgram>? = null
+    private var paramMiniWorkoutCardOptions: MiniWorkoutCardOptions? = null
+
     private var mFitnessProgramListener: FitnessProgramListener? = null
 
     private lateinit var binding: FragmentListFitnessProgramsBinding
@@ -41,6 +45,18 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
             } else {
                 it.getParcelableArrayList(ARG_FITNESS_PROGRAMS)
             }
+
+            paramMiniWorkoutCardOptions =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.getParcelable(
+                        ARG_MINI_WORKOUT_CARD_OPTIONS,
+                        MiniWorkoutCardOptions::class.java
+                    )
+                } else {
+                    it.getParcelable(
+                        ARG_MINI_WORKOUT_CARD_OPTIONS
+                    )
+                }
         }
     }
 
@@ -58,7 +74,13 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
 
         paramFitnessPrograms?.let {
             adapter =
-                ListFitnessProgramsAdapter(it, requireContext(), this)
+                ListFitnessProgramsAdapter(
+                    getSimpleFitnessPrograms(it),
+                    getMiniFitnessPrograms(it),
+                    requireContext(),
+                    paramMiniWorkoutCardOptions!!,
+                    this
+                )
             if (it.size > 1) {
                 binding.viewPager.showHorizontalPreview(25, 25, 10)
             } else {
@@ -73,7 +95,15 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
         }
     }
 
-    override fun onDayClick(fitnessProgram: FitnessProgram, dayIndex: Int) {
+    private fun getSimpleFitnessPrograms(input:List<FitnessProgram>):List<FitnessProgram> {
+        return input.filter { x -> x.days.size > 1 }
+    }
+
+    private fun getMiniFitnessPrograms(input:List<FitnessProgram>):List<FitnessProgram> {
+        return input.filter { x -> x.days.size == 1 }
+    }
+
+    override fun onItemClick(fitnessProgram: FitnessProgram, dayIndex: Int) {
 
         mFitnessProgramListener?.onFitnessProgramDaySelect(fitnessProgram, dayIndex)
 
@@ -82,6 +112,9 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
         intent.putExtra("dayIndex", dayIndex)
         intent.putExtra("bannerUnitId", mAdmobBannerAdUnitId)
         intent.putExtra("enableAdds", mEnableAdds)
+
+        if (fitnessProgram.days.size == 1)
+            intent.putExtra("singleDayProgram", true)
 
         getResultSingleFitnessProgramActivity.launch(intent)
     }
@@ -122,6 +155,30 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
         ) =
             ListFitnessProgramsFragment().apply {
                 arguments = Bundle().apply {
+                    putParcelable(ARG_MINI_WORKOUT_CARD_OPTIONS, MiniWorkoutCardOptions())
+                    putParcelableArrayList(
+                        ARG_FITNESS_PROGRAMS,
+                        fitnessPrograms.toCollection(ArrayList())
+                    )
+                }
+            }
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param miniWorkoutCardOptions Parameter 1.
+         * @param fitnessPrograms Parameter 1.
+         * @return A new instance of fragment BlankFragment.
+         */
+        @JvmStatic
+        fun newInstance(
+            miniWorkoutCardOptions: MiniWorkoutCardOptions,
+            vararg fitnessPrograms: FitnessProgram
+        ) =
+            ListFitnessProgramsFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_MINI_WORKOUT_CARD_OPTIONS, miniWorkoutCardOptions)
                     putParcelableArrayList(
                         ARG_FITNESS_PROGRAMS,
                         fitnessPrograms.toCollection(ArrayList())

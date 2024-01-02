@@ -495,7 +495,7 @@ internal class FitnessProgramFragment : BaseWorkoutFrag() {
         val fitnessProgram = paramFitnessPrograms!!
         dayIndex = paramDayIndex!!
 
-        (requireActivity() as SingleFitnessProgramActivity).updateStatusBarColor(Color.WHITE,true)
+        (requireActivity() as SingleFitnessProgramActivity).updateStatusBarColor(resources.getColor(R.color.color_background_fitness_program_running,null),true)
         workouts = fitnessProgram.days[dayIndex].workouts
     }
 

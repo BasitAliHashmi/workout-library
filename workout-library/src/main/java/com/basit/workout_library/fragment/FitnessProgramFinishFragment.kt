@@ -94,7 +94,7 @@ internal class FitnessProgramFinishFragment : BaseWorkoutFrag() {
         val color = paramFitnessPrograms!!.color
 
         binding.layoutRoot.setBackgroundColor(color)
-        (activity as SingleFitnessProgramActivity).updateStatusBarColor(color,false)
+        (requireActivity() as SingleFitnessProgramActivity).updateStatusBarColor(color,false)
         binding.lblTitle.text = fitnessProgram.title
         binding.lblDay.text = "Congratulations! Day ${dayIndex + 1} finished."
 

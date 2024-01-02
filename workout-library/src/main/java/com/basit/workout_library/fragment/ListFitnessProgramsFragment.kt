@@ -83,6 +83,7 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
                 )
             if (it.size > 1) {
                 binding.viewPager.showHorizontalPreview(25, 25, 10)
+
             } else {
                 val lp = binding.viewPager.layoutParams as ConstraintLayout.LayoutParams
                 lp.marginStart = 25
@@ -92,6 +93,9 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
                 binding.viewPager.isUserInputEnabled = false
             }
             binding.viewPager.adapter = adapter
+
+            if (it.size > 1)
+                binding.viewPager.currentItem = 1
         }
     }
 

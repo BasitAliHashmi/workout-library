@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         workoutFragment.addListener(object : FitnessProgramListener {
             override fun onFitnessProgramDaySelect(fitnessProgram: FitnessProgram, dayIndex: Int) {
-                Toast.makeText(this@MainActivity, "$dayIndex day selected", Toast.LENGTH_SHORT)
+                Toast.makeText(this@MainActivity, "$dayIndex: ${fitnessProgram.title} ", Toast.LENGTH_SHORT)
                     .show()
             }
 

@@ -78,6 +78,10 @@ class SingleFitnessProgramActivity : AppCompatActivity() {
 
     fun updateStatusBarColor(color:Int, lightStatusBar:Boolean) {
 
+    }
+
+    fun updateStatusBarColorx(color:Int, lightStatusBar:Boolean) {
+
         if (window != null) {
             window.statusBarColor = color
             window.navigationBarColor = color

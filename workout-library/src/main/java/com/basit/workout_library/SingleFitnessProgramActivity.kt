@@ -78,53 +78,40 @@ class SingleFitnessProgramActivity : AppCompatActivity() {
 
     fun updateStatusBarColor(color:Int, lightStatusBar:Boolean) {
 
-    }
+        window.statusBarColor = color
+        window.navigationBarColor = color
 
-    fun updateStatusBarColorx(color:Int, lightStatusBar:Boolean) {
+        if (lightStatusBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                )
+                window.insetsController?.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                )
 
-        if (window != null) {
-            window.statusBarColor = color
-            window.navigationBarColor = color
-
-            if (lightStatusBar) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-
-                    if (window.insetsController != null) {
-                        window.insetsController?.setSystemBarsAppearance(
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-                        )
-
-                        window.insetsController?.setSystemBarsAppearance(
-                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
-                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                        )
-                    }
-
-                } else {
-                    @Suppress("DEPRECATION")
-                    window.decorView.systemUiVisibility =
-                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                )
+                window.insetsController?.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                )
 
-                    if (window.insetsController != null) {
-                        window.insetsController?.setSystemBarsAppearance(
-                            0,
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-                        )
-
-                        window.insetsController?.setSystemBarsAppearance(
-                            0,
-                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                        )
-                    }
-                } else {
-                    @Suppress("DEPRECATION")
-                    window.decorView.systemUiVisibility =
-                        View.STATUS_BAR_VISIBLE
-                }
+            } else {
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility =
+                    View.STATUS_BAR_VISIBLE
             }
         }
     }

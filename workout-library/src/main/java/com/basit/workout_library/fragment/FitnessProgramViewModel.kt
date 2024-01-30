@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.basit.workout_library.core.domain.WorkoutHistoryRepository
 import com.basit.workout_library.models.TimerTickState
 import com.basit.workout_library.core.domain.model.WorkoutHistory
+import com.basit.workout_library.core.domain.model.WorkoutProgressByDays
 import com.basit.workout_library.core.domain.model.WorkoutSummary
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -20,6 +21,7 @@ internal class FitnessProgramViewModel(private val workoutHistoryRepository: Wor
     val tick = MutableLiveData<TimerTickState>()
     val summaryReport = MutableLiveData<List<WorkoutSummary>>()
     val singleDaySummaryReport = MutableLiveData<WorkoutSummary>()
+    val progressByDays = MutableLiveData<List<WorkoutProgressByDays>>()
 
     fun startTimer(seconds: Int) = viewModelScope.launch {
         if (seconds > 0) {
@@ -51,17 +53,23 @@ internal class FitnessProgramViewModel(private val workoutHistoryRepository: Wor
         workoutHistoryRepository.insert(model)
     }
 
-    fun getSummarizedReport(from: LocalDateTime, to: LocalDateTime, programId:Int) = viewModelScope.launch {
-        val data = workoutHistoryRepository.getSummarizedReport(from, to, programId)
-        summaryReport.postValue(createEmptyDays(data, from, to))
-    }
+    fun getSummarizedReport(from: LocalDateTime, to: LocalDateTime, programId: Int) =
+        viewModelScope.launch {
+            val data = workoutHistoryRepository.getSummarizedReport(from, to, programId)
+            summaryReport.postValue(createEmptyDays(data, from, to))
+        }
 
-    fun getSummarizedReport(dateFor: LocalDateTime, programId:Int, dayNo:Int) = viewModelScope.launch {
-        val data = workoutHistoryRepository.getSummarizedReport(dateFor, programId, dayNo)
-        singleDaySummaryReport.postValue(data)
-    }
+    fun getSummarizedReport(dateFor: LocalDateTime, programId: Int, dayNo: Int) =
+        viewModelScope.launch {
+            val data = workoutHistoryRepository.getSummarizedReport(dateFor, programId, dayNo)
+            singleDaySummaryReport.postValue(data)
+        }
 
-    private fun createEmptyDays(summaryList:List<WorkoutSummary>, dateFrom: LocalDateTime, dateTo: LocalDateTime):List<WorkoutSummary> {
+    private fun createEmptyDays(
+        summaryList: List<WorkoutSummary>,
+        dateFrom: LocalDateTime,
+        dateTo: LocalDateTime
+    ): List<WorkoutSummary> {
         val list = arrayListOf<WorkoutSummary>()
 
         val daysBetween = ChronoUnit.DAYS.between(dateFrom, dateTo)
@@ -91,4 +99,9 @@ internal class FitnessProgramViewModel(private val workoutHistoryRepository: Wor
 
         return list
     }
+
+    fun loadWorkoutProgress() = viewModelScope.launch {
+        progressByDays.value = workoutHistoryRepository.getProgressByDays()
+    }
+
 }

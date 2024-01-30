@@ -26,7 +26,8 @@ class LoseBellyFatProgram {
                     day5()
                 ),
                 R.drawable.fat_loss_model,
-                Color.parseColor("#164E7C")
+                Color.parseColor("#6200EE")
+                //Color.parseColor("#164E7C")
             )
         }
 

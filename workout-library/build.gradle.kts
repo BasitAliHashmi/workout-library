@@ -48,15 +48,15 @@ android {
 
 dependencies {
     val roomVersion = "2.6.1"
-    val navComponentVersion = "2.7.5"
+    val navComponentVersion = "2.7.6"
     val glideVersion = "4.16.0"
 
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.annotation:annotation:1.7.0")
+    implementation("androidx.annotation:annotation:1.7.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
     //glide
@@ -89,7 +89,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.basit.libs"
             artifactId = "workout-library"
-            version = "1.1.4"
+            version = "1.1.5"
             afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
             //from(components["java"])
         }

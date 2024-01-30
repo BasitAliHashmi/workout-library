@@ -6,10 +6,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class FitnessProgramDay(
     val restDay:Boolean = false,
-    val workouts:List<Workout> = arrayListOf()
+    val workouts:List<Workout> = arrayListOf(),
+    var progress:Int = 0
 ) : Parcelable {
-    //var totalSeconds:Int = 0
-
     fun totalSeconds():Int{
         var totalSeconds = 0
         this.workouts.filter { it.type == WorkoutType.Timed }.forEach { item ->

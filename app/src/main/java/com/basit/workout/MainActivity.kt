@@ -1,11 +1,8 @@
 package com.basit.workout
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-//import androidx.navigation.NavController
-//import androidx.navigation.findNavController
 import com.basit.workout.databinding.ActivityMainBinding
 import com.basit.workout.model.LoseBellyFatProgram
 import com.basit.workout.model.MiniWakeupWorkoutProgram
@@ -32,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         workoutFragment = ListFitnessProgramsFragment.newInstance(
             miniWorkoutCardOptions = MiniWorkoutCardOptions(cardTitle = "Mini Workout's"),
             LoseBellyFatProgram.program(),
-            MiniWakeupWorkoutProgram.program(),
             MiniWakeupWorkoutProgram.program()
         )
 

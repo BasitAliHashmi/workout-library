@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import com.basit.workout_library.SingleFitnessProgramActivity
 import com.basit.workout_library.WorkoutLibrary
 import com.basit.workout_library.adapter.ListFitnessProgramsAdapter
 import com.basit.workout_library.base.BaseWorkoutFrag
+import com.basit.workout_library.core.domain.model.WorkoutProgressByDays
 import com.basit.workout_library.databinding.FragmentListFitnessProgramsBinding
 import com.basit.workout_library.listeners.FitnessProgramListener
 import com.basit.workout_library.models.FitnessProgram
@@ -19,6 +21,7 @@ import com.basit.workout_library.models.MiniWorkoutCardOptions
 import com.basit.workout_library.utils.OnFitnessProgramClick
 import com.basit.workout_library.utils.WorkoutLibraryExtensions.showHorizontalPreview
 import java.util.ArrayList
+import kotlin.math.roundToInt
 
 private const val ARG_FITNESS_PROGRAMS = "param_fitness_programs"
 private const val ARG_MINI_WORKOUT_CARD_OPTIONS = "param_mini_workout_card_options"
@@ -29,6 +32,8 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
     private var paramMiniWorkoutCardOptions: MiniWorkoutCardOptions? = null
 
     private var mFitnessProgramListener: FitnessProgramListener? = null
+
+    private lateinit var viewModel: FitnessProgramViewModel
 
     private lateinit var binding: FragmentListFitnessProgramsBinding
     private lateinit var adapter: ListFitnessProgramsAdapter
@@ -66,36 +71,77 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentListFitnessProgramsBinding.inflate(inflater, container,false)
+
+        viewModel = ViewModelProvider(
+            this,
+            FitnessProgramViewModelFactory(WorkoutLibrary.getInstance().workoutHistoryRepository)
+        )[FitnessProgramViewModel::class.java]
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         paramFitnessPrograms?.let {
-            adapter =
-                ListFitnessProgramsAdapter(
-                    getSimpleFitnessPrograms(it),
-                    getMiniFitnessPrograms(it),
-                    requireContext(),
-                    paramMiniWorkoutCardOptions!!,
-                    this
-                )
-            if (it.size > 1) {
-                binding.viewPager.showHorizontalPreview(25, 25, 10)
+            setObservers()
+            viewModel.loadWorkoutProgress()
+        }
+    }
 
-            } else {
-                val lp = binding.viewPager.layoutParams as ConstraintLayout.LayoutParams
-                lp.marginStart = 25
-                lp.marginEnd = 25
-                binding.viewPager.layoutParams = lp
+    private fun setObservers() {
+        viewModel.progressByDays.observe(viewLifecycleOwner) { progressData ->
+            paramFitnessPrograms?.let { fitnessPrograms ->
 
-                binding.viewPager.isUserInputEnabled = false
+                setDaysProgress(progressData)
+
+                adapter =
+                    ListFitnessProgramsAdapter(
+                        getSimpleFitnessPrograms(fitnessPrograms),
+                        getMiniFitnessPrograms(fitnessPrograms),
+                        requireContext(),
+                        paramMiniWorkoutCardOptions!!,
+                        this
+                    )
+                if (fitnessPrograms.size > 1) {
+                    binding.viewPager.showHorizontalPreview(25, 25, 10)
+
+                } else {
+                    val lp = binding.viewPager.layoutParams as ConstraintLayout.LayoutParams
+                    lp.marginStart = 25
+                    lp.marginEnd = 25
+                    binding.viewPager.layoutParams = lp
+
+                    binding.viewPager.isUserInputEnabled = false
+                }
+                binding.viewPager.adapter = adapter
+
+                if (fitnessPrograms.size > 1)
+                    binding.viewPager.currentItem = 1
             }
-            binding.viewPager.adapter = adapter
+        }
+    }
 
-            if (it.size > 1)
-                binding.viewPager.currentItem = 1
+    private fun setDaysProgress(dayWiseProgress: List<WorkoutProgressByDays>) {
+
+        val workoutMinDurationSeconds = 5
+
+        paramFitnessPrograms?.forEach { p ->
+
+            p.days.forEachIndexed { i, day ->
+
+                var counterForCompletedWorkout = 0.0
+
+                dayWiseProgress.filter { x -> x.programId == p.id && x.dayNumber == (i + 1) }
+                    .forEach { pd ->
+                        if (pd.totalSecondsActive >= workoutMinDurationSeconds)
+                            counterForCompletedWorkout += 1.0
+                    }
+
+                if (counterForCompletedWorkout > 0) {
+                    day.progress =
+                        ((counterForCompletedWorkout / day.workouts.size.toDouble()) * 100.0).roundToInt()
+                }
+            }
         }
     }
 
@@ -141,6 +187,7 @@ class ListFitnessProgramsFragment : BaseWorkoutFrag(), OnFitnessProgramClick {
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
+            viewModel.loadWorkoutProgress()
             mFitnessProgramListener?.onFitnessProgramEnd(it.resultCode)
         }
 

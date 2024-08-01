@@ -70,10 +70,14 @@ internal class ListFitnessProgramsAdapter(private val items:List<FitnessProgram>
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0)
-            mMiniFitnessProgramsViewType
-        else
+        return if (miniFitnessPrograms.isNotEmpty()) {
+            if (position == 0)
+                mMiniFitnessProgramsViewType
+            else
+                mSimpleFitnessProgramViewType
+        } else {
             mSimpleFitnessProgramViewType
+        }
     }
 
     override fun getItemCount(): Int {
@@ -88,7 +92,12 @@ internal class ListFitnessProgramsAdapter(private val items:List<FitnessProgram>
         when (holder) {
             is SimpleFitnessProgramViewHolder -> {
 
-                val currentItem = items[position - 1]
+                val currentItem = if (miniFitnessPrograms.isNotEmpty()){
+                    items[position - 1]
+                } else {
+                    items[position]
+                }
+
 
                 val alphaFull = 1.0f
                 val alphaDim = 0.4f

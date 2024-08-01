@@ -26,10 +26,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun createWorkoutFragment() {
 
-        workoutFragment = ListFitnessProgramsFragment.newInstance(
+        /*workoutFragment = ListFitnessProgramsFragment.newInstance(
             miniWorkoutCardOptions = MiniWorkoutCardOptions(cardTitle = "Mini Workout's"),
             LoseBellyFatProgram.program(),
             MiniWakeupWorkoutProgram.program()
+        )*/
+
+        workoutFragment = ListFitnessProgramsFragment.newInstance(
+            LoseBellyFatProgram.program()
         )
 
         val trans = supportFragmentManager.beginTransaction()

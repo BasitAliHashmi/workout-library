@@ -47,7 +47,7 @@ internal class ListMiniFitnessProgramsAdapter(private val fitnessPrograms: List<
             .error(ColorDrawable(Color.CYAN))
             .into(holder.fitnessIcon)
 
-        holder.mainCard.setCardBackgroundColor(Color.WHITE)
+        //holder.mainCard.setCardBackgroundColor(Color.WHITE)
 
         holder.mainCard.setOnClickListener {
             onClick.onItemClick(currentItem, 0)

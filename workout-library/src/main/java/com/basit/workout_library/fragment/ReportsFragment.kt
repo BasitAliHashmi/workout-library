@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -113,7 +114,9 @@ class ReportsFragment : BaseWorkoutFrag() {
             xAxis.setDrawGridLines(false)
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.isGranularityEnabled = false
-            xAxis.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto)
+            xAxis.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
+            xAxis.textColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, "Error: Primary color not found")
+
 
             val leftAxis = barChart.axisLeft
             leftAxis.setDrawGridLines(true)
@@ -122,11 +125,13 @@ class ReportsFragment : BaseWorkoutFrag() {
             leftAxis.setGridDashedLine(DashPathEffect(floatArrayOf(6f, 6f), 20f))
             leftAxis.setDrawTopYLabelEntry(true)
             leftAxis.axisMinimum = 0f
-            leftAxis.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto)
+            leftAxis.typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
+            leftAxis.textColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, "Error: Primary color not found")
 
             barChart.axisRight.isEnabled = false
             barChart.legend.isEnabled = false
             barChart.setNoDataText("No data available")
+            barChart.setNoDataTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, "Error: Primary color not found"))
         }
     }
 
@@ -205,9 +210,10 @@ class ReportsFragment : BaseWorkoutFrag() {
             set1.valueTextSize = 10f
             set1.valueTypeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)
             set1.valueFormatter = BarChartBarsValueFormatter()
+            set1.valueTextColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, "Error: Primary color not found")
 
             set1.setColors(
-                ContextCompat.getColor(requireContext(), R.color.bar_chart_bars_color)
+                MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, "Error: Primary color not found")
             )
 
             configureBarChart()

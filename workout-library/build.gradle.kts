@@ -92,7 +92,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.basit.libs"
             artifactId = "workout-library"
-            version = "1.1.8"
+            version = "1.2.0"
             afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
             //from(components["java"])
         }

@@ -112,6 +112,7 @@ internal class BrowseFitnessProgramDayFragment : BaseWorkoutFrag() {
         val color = paramFitnessPrograms!!.color
         binding.layoutRoot.setBackgroundColor(color)
         binding.btnStart.backgroundTintList = ColorStateList.valueOf(color)
+        binding.btnStart.setTextColor(Color.WHITE)
         (requireActivity() as SingleFitnessProgramActivity).updateStatusBarColor(color, false)
 
         //exercises
